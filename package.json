@@ -1,6 +1,6 @@
 {
   "name": "mk-dirs",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Make a directory and its parents, if necessary.",
   "repository": "lukeed/mk-dirs",
   "main": "lib/index.js",
