@@ -44,13 +44,6 @@ test('`mode` option', co(function * (t) {
 	t.end();
 }));
 
-test('`Promise` option', co(function * (t) {
-	const dir = getFixture();
-	yield fn(dir, { Promise });
-	assertDir(t, dir);
-	t.end();
-}));
-
 test('dir exists', co(function * (t) {
 	const dir = yield fn(tempy.directory());
 	t.true(dir.length > 0);
