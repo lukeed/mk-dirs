@@ -124,9 +124,15 @@ test('handles invalid path chars (win32)', co(function * (t) {
 }));
 
 if (process.platform === 'win32') {
+	// We assume the `o:\` drive doesn't exist on Windows
 	test('handles non-existent root', co(function * (t) {
-		// We assume the `o:\` drive doesn't exist on Windows
-		const err = yield t.throws(fn('o:\\foo'), /no such file or directory/);
-		t.is(err.code, 'ENOENT');
+		try {
+			yield fn('o:\\foo');
+		} catch (err) {
+			t.pass('throws');
+			t.is(err.code, 'ENOENT');
+			t.true(/no such file or directory/.test(err.message));
+		}
+		t.end();
 	}));
 }
