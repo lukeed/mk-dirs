@@ -1,3 +1,5 @@
+'use strict';
+
 const join = require('path').join;
 const stats = require('fs').statSync;
 const write = require('fs').writeFileSync;
