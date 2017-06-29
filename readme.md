@@ -97,7 +97,7 @@ Directory [permissions](https://x-team.com/blog/file-system-permissions-umask-no
 #### mkdirp
 
 * Promise API _(Async/await ready!)_
-* Fixes many mkdirp issues: [#96](https://github.com/substack/node-mkdirp/pull/96) [#70](https://github.com/substack/node-mkdirp/issues/70) [#66](https://github.com/substack/node-mkdirp/issues/66)
+* Fixes many `mkdirp` issues: [#96](https://github.com/substack/node-mkdirp/pull/96) [#70](https://github.com/substack/node-mkdirp/issues/70) [#66](https://github.com/substack/node-mkdirp/issues/66)
 * CI-tested on macOS, Linux, and Windows
 * Doesn't bundle a CLI
 
