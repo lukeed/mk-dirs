@@ -92,6 +92,7 @@ Directory [permissions](https://x-team.com/blog/file-system-permissions-umask-no
 
 * _Slightly faster_
 * Doesn't re-wrap an existing Promise
+* Doesn't ship with a `.sync` method
 * Zero dependencies
 
 #### mkdirp
@@ -99,6 +100,7 @@ Directory [permissions](https://x-team.com/blog/file-system-permissions-umask-no
 * Promise API _(Async/await ready!)_
 * Fixes many `mkdirp` issues: [#96](https://github.com/substack/node-mkdirp/pull/96) [#70](https://github.com/substack/node-mkdirp/issues/70) [#66](https://github.com/substack/node-mkdirp/issues/66)
 * CI-tested on macOS, Linux, and Windows
+* Doesn't ship with a `.sync` method
 * Doesn't bundle a CLI
 
 
