@@ -1,12 +1,13 @@
 {
   "name": "mk-dirs",
   "version": "1.0.0",
-  "description": "Make a directory and its parents, if necessary.",
   "repository": "lukeed/mk-dirs",
-  "main": "lib/index.js",
+  "description": "Make a directory and its parents recursively",
+  "module": "dist/index.mjs",
+  "main": "dist/index.js",
   "license": "MIT",
   "files": [
-    "lib"
+    "dist"
   ],
   "author": {
     "name": "Luke Edwards",
@@ -17,8 +18,9 @@
     "node": ">=4"
   },
   "scripts": {
+    "build": "bundt",
     "bench": "node bench",
-    "precommit": "prettier --single-quote --use-tabs --print-width=100 --write '{lib,test}/*.js'",
+    "pretest": "npm run build",
     "test": "tape test/*.js | tap-spec"
   },
   "keywords": [
@@ -26,6 +28,7 @@
     "mkdirp"
   ],
   "devDependencies": {
+    "bundt": "^0.4.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.10.2"
   }

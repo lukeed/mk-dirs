@@ -7,7 +7,8 @@ const graceful = require('graceful-fs');
 const Promise = require('bluebird');
 const tempy = require('tempy');
 const test = require('tape');
-const fn = require('../lib');
+
+const fn = require('../dist');
 
 const co = Promise.coroutine;
 const isDir = str => stats(str).isDirectory();

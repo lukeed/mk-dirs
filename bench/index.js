@@ -6,7 +6,7 @@ const Table = require('cli-table2');
 const makeDir = require('make-dir');
 const mkdirp = require('mkdirp');
 const tempy = require('tempy');
-const fn = require('../lib');
+const fn = require('../dist');
 
 const bench = new Suite();
 const wrap = Bluebird.promisify;

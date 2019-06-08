@@ -30,7 +30,7 @@ function mkdirs(str, opts) {
 	});
 }
 
-module.exports = (str, opts) => {
+export default (str, opts) => {
 	opts = opts || {};
 
 	if (process.platform === 'win32' && RGX.test(str.replace(path.parse(str).root, ''))) {
