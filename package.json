@@ -22,7 +22,8 @@
     "test": "tape test/*.js | tap-spec"
   },
   "keywords": [
-    ""
+    "mkdir",
+    "mkdirp"
   ],
   "devDependencies": {
     "bluebird": "^3.5.0",
