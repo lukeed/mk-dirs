@@ -26,10 +26,7 @@
     "mkdirp"
   ],
   "devDependencies": {
-    "bluebird": "^3.5.0",
-    "graceful-fs": "^4.1.11",
-    "tap-spec": "^4.1.1",
-    "tape": "^4.6.3",
-    "tempy": "^0.1.0"
+    "tap-spec": "^5.0.0",
+    "tape": "^4.10.2"
   }
 }
