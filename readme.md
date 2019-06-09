@@ -1,6 +1,6 @@
 # mk-dirs [![Build Status](https://badgen.now.sh/travis/lukeed/mk-dirs)](https://travis-ci.org/lukeed/mk-dirs)
 
-> Make a directory and its parents, recursively
+> A tiny (420B) utility to make a directory and its parents, recursively
 
 This is a `Promise`-based utility that recursively creates directories.<br>
 It's effectively `mkdir -p` for Node.js
@@ -137,6 +137,9 @@ The directory [permissions](https://x-team.com/blog/file-system-permissions-umas
 * ...does not allow custom `fs` option
 * ...does not bundle a CLI runtime
 
+## Related
+
+- [`premove`](https://github.com/lukeed/premove) – A tiny (247B) utility to remove items recursively
 
 ## License
 

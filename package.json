@@ -2,7 +2,7 @@
   "name": "mk-dirs",
   "version": "1.0.0",
   "repository": "lukeed/mk-dirs",
-  "description": "Make a directory and its parents recursively",
+  "description": "A tiny (420B) utility to make a directory and its parents, recursively",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
   "types": "mkdirs.d.ts",
