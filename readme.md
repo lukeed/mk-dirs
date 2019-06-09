@@ -1,10 +1,34 @@
-# mk-dirs [![Build Status: OSX & Linux](https://travis-ci.org/lukeed/mk-dirs.svg?branch=master)](https://travis-ci.org/lukeed/mk-dirs) [![Build Status: Windows](https://ci.appveyor.com/api/projects/status/syt3wy6mx7dsia2d/branch/master?svg=true)](https://ci.appveyor.com/project/lukeed/mk-dirs/branch/master)
+# mk-dirs [![Build Status](https://badgen.now.sh/travis/lukeed/mk-dirs)](https://travis-ci.org/lukeed/mk-dirs)
 
-> Make a directory and its parents, if necessary.
+> Make a directory and its parents, recursively
 
-This is a fast and lightweight alternative to [`mkdirp`](https://github.com/substack/node-mkdirp). It's also heavily inspired by [`make-dir`](https://github.com/sindresorhus/make-dir).
+This is a `Promise`-based utility that recursively creates directories.<br>
+It's effectively `mkdir -p` for Node.js
 
+This module is a fast and lightweight alternative to [`mkdirp`](https://github.com/substack/node-mkdirp).<br>
 Check out [Comparisons](#comparisons) for more info!
+
+> **Important:** Requires Node 8.x or later – uses `async` functions.
+
+Available in these formats:
+
+* **ES Module**: `dist/index.mjs`
+* **CommonJS**: `dist/index.js`
+
+> **Note:**<br>
+> Are you using Node.js 10.12 or later?<br>
+> If so, You should use the built-in [`fs.mkdir`](https://nodejs.org/api/fs.html#fs_fs_mkdir_path_options_callback) instead!
+
+  ```js
+  const { mkdir } = require('fs');
+  const { promisify } = require('util');
+
+  const mkdirp = promisify(mkdir);
+
+  function mkdirs(str, opts={}) {
+    return mkdirp(str, { ...opts, recursive:true });
+  }
+  ```
 
 
 ## Install
@@ -57,33 +81,29 @@ Promise.all([
 
 ## API
 
-### mkdir(path, [options])
+### mkdir(path, options={})
 
 Returns a `Promise`, which resolves with the full path of the created directory.
 
 #### path
+Type: `String`
 
-Type: `string`
+The directory to create.
 
-Directory to create.
+#### options.cwd
+Type: `String`<br>
+Default: `.`
 
-#### options.fs
-
-Type: `object`<br>
-Default: `require('fs')`
-
-Optionally use a custom `fs` implementation. For example [`graceful-fs`](https://github.com/isaacs/node-graceful-fs).
-
-> **Important:** Must include `mkdir` and `stat` methods!
+The directory to resolve your `path` from.<br>
+Defaults to the `process.cwd()` – aka, the directory that your command is run within.
 
 #### options.mode
-
-Type: `integer`<br>
+Type: `Number`<br>
 Default: `0o777 & (~process.umask())`
 
-Directory [permissions](https://x-team.com/blog/file-system-permissions-umask-node-js/).
+The directory [permissions](https://x-team.com/blog/file-system-permissions-umask-node-js/) to set.
 
-> **Note:** Must be in octal format!
+> **Important:** Must be in octal format!
 
 
 ## Comparisons
@@ -106,7 +126,8 @@ Directory [permissions](https://x-team.com/blog/file-system-permissions-umask-no
 
 ## Benchmarks
 
-:bulb: Please consider that these benchmarks are _largely affected_ by System behavior! In other words, the time it takes your OS to create a directory _is never consistent_.
+:bulb: Please consider that these benchmarks are _largely affected_ by system behavior!<br>
+In other words, the time it takes your OS to create a directory _is never consistent_.
 
 ```
 mk-dirs
