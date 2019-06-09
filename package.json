@@ -29,6 +29,7 @@
   ],
   "devDependencies": {
     "bundt": "^0.4.0",
+    "premove": "^1.0.0",
     "tap-spec": "^5.0.0",
     "tape": "^4.10.2"
   }
