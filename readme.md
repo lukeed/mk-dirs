@@ -40,50 +40,57 @@ $ npm install --save mk-dirs
 
 ## Usage
 
-```js
+```sh
 $ pwd
-/Users/hello/world
+# /Users/hello/world
+
 $ tree
-.
+# .
 ```
 
 ```js
-const mkdir = require('mk-dirs');
+import mkdirs from 'mk-dirs';
+import { resolve } from 'path';
 
-mkdir('foo/bar/baz').then(path => {
-  console.log(path);
-  //=> '/Users/hello/world/foo/bar/baz'
+// Async/await
+try {
+  let output = await mkdirs('foo/bar/baz');
+  console.log(output); //=> "/Users/hello/world/foo/bar/baz"
+} catch (err) {
+  //
+}
+
+// Promises
+mkdirs('foo/bar/baz').then(output => {
+  console.log(output); //=> "/Users/hello/world/foo/bar/baz"
+}).catch(err => {
+  //
 });
+
+// Using `cwd` option
+let dir = resolve('foo/bar');
+await mkdirs('hola/mundo', { cwd: dir });
+//=> "/Users/hello/world/foo/bar/hola/mundo"
 ```
 
-```
+```sh
 $ tree
-.
-└── foo
-    └── bar
-        └── baz
-```
-
-#### Multiple Directories
-
-```js
-const mkdir = require('mk-dirs');
-
-Promise.all([
-  mkdir('cat/cow'),
-  mkdir('foo/bar/baz')
-]).then(paths => {
-  console.log(paths);
-  //=> [ '/Users/hello/world/cat/cow', '/Users/hello/world/foo/bar/baz' ]
-});
+# .
+# └── foo
+#     └── bar
+#         └── baz
+#         └── hola
+#             └── mundo
 ```
 
 
 ## API
 
 ### mkdir(path, options={})
+Returns: `Promise<String>`
 
-Returns a `Promise`, which resolves with the full path of the created directory.
+Returns a `Promise`, which resolves with the full path (string) of the created directory.<br>
+Any file system errors will be thrown and must be caught manually.
 
 #### path
 Type: `String`
@@ -108,20 +115,27 @@ The directory [permissions](https://x-team.com/blog/file-system-permissions-umas
 
 ## Comparisons
 
-#### make-dir
+***Versus `make-dir`***
 
-* _Slightly faster_
-* Doesn't re-wrap an existing Promise
-* Doesn't ship with a `.sync` method
-* Zero dependencies
+* `mk-dirs` is slightly faster
+* ...has zero dependencies
+* ...does offer `cwd` option
+* ...does not re-wrap an existing Promise
+* ...does not ship with a `sync` method
+* ...does not allow custom `fs` option
 
-#### mkdirp
+***Versus `mkdirp`***
 
-* Promise API _(Async/await ready!)_
-* Fixes many `mkdirp` issues: [#96](https://github.com/substack/node-mkdirp/pull/96) [#70](https://github.com/substack/node-mkdirp/issues/70) [#66](https://github.com/substack/node-mkdirp/issues/66)
-* CI-tested on macOS, Linux, and Windows
-* Doesn't ship with a `.sync` method
-* Doesn't bundle a CLI
+* `mk-dirs` is _much_ faster
+* ...has zero dependencies
+* ...is a Promise-based API
+* ...is `async`/`await` ready!
+* ...is tested on macOS, Linux, and Windows
+* ... has fixes for `mkdirp` issues: [#96](https://github.com/substack/node-mkdirp/pull/96), [#70](https://github.com/substack/node-mkdirp/issues/70), [#66](https://github.com/substack/node-mkdirp/issues/66)
+* ...includes a `cwd` option
+* ...does not ship with a `sync` method
+* ...does not allow custom `fs` option
+* ...does not bundle a CLI runtime
 
 
 ## License
