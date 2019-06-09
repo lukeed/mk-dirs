@@ -124,21 +124,6 @@ The directory [permissions](https://x-team.com/blog/file-system-permissions-umas
 * Doesn't bundle a CLI
 
 
-## Benchmarks
-
-:bulb: Please consider that these benchmarks are _largely affected_ by system behavior!<br>
-In other words, the time it takes your OS to create a directory _is never consistent_.
-
-```
-mk-dirs
-  --> 3,768 ops/sec ±1.95% (72 runs sampled)
-make-dir
-  --> 3,527 ops/sec ±4.28% (64 runs sampled)
-mkdirp
-  --> 3,305 ops/sec ±2.56% (67 runs sampled)
-```
-
-
 ## License
 
 MIT © [Luke Edwards](https://lukeed.com)
