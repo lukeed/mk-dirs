@@ -5,8 +5,10 @@
   "description": "Make a directory and its parents recursively",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
+  "types": "mkdirs.d.ts",
   "license": "MIT",
   "files": [
+    "*.d.ts",
     "dist"
   ],
   "author": {
