@@ -148,7 +148,7 @@ test('path with null bytes', async t => {
 		await mkdirs(str);
 	} catch (err) {
 		t.true(err instanceof Error, 'throws Error');
-		t.is(err.code, 'ERR_INVALID_ARG_VALUE', '~> code');
+		t.true(/ENOENT|ERR_INVALID_ARG_VALUE/.test(err.code), '~> code');
 		t.true(err.message.includes('null bytes'), '~> message');
 	}
 
