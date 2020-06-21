@@ -1,12 +1,15 @@
 import { existsSync, mkdirSync, statSync } from 'fs';
 import { join, normalize, parse, resolve } from 'path';
 
+function throws(code, msg, path) {
+	let err = new Error(code + ': ' + msg);
+	err.code=code; err.path=path;
+	throw err;
+}
+
 export default function (str, opts={}) {
 	if (process.platform === 'win32' && /[<>:"|?*]/.test(str.replace(parse(str).root, ''))) {
-		let err = new Error('EINVAL: invalid characters');
-		err.code = 'EINVAL';
-		err.path = str;
-		throw err;
+		throws('EINVAL', 'invalid characters', str);
 	}
 
 	let cwd = resolve(opts.cwd || '.');
@@ -17,10 +20,7 @@ export default function (str, opts={}) {
 		cwd = join(cwd, seg);
 		if (existsSync(cwd)) {
 			if (!statSync(cwd).isDirectory()) {
-				let err = new Error('ENOTDIR: not a directory');
-				err.code = 'ENOTDIR';
-				err.path = cwd;
-				throw err;
+				throws('ENOTDIR', 'not a directory', cwd);
 			}
 		} else {
 			mkdirSync(cwd, mode);
