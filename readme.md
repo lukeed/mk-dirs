@@ -1,4 +1,4 @@
-# mk-dirs [![Build Status](https://badgen.now.sh/travis/lukeed/mk-dirs)](https://travis-ci.org/lukeed/mk-dirs)
+# mk-dirs [![build status](https://badgen.now.sh/github/status/lukeed/mk-dirs)](https://github.com/lukeed/mk-dirs/actions) [![codecov](https://badgen.now.sh/codecov/c/github/lukeed/mk-dirs)](https://codecov.io/gh/lukeed/mk-dirs)
 
 > A tiny (420B) utility to make a directory and its parents, recursively
 
