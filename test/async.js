@@ -2,7 +2,7 @@ import { test } from 'uvu';
 import premove from 'premove';
 import * as assert from 'uvu/assert';
 import { existsSync, statSync, writeFileSync } from 'fs';
-import { join, resolve } from 'path';
+import { join, resolve, parse } from 'path';
 import mkdirs from  '../src/async';
 
 const isWin = process.platform === 'win32';
@@ -145,27 +145,38 @@ test('path with null bytes', async () => {
 	exists(dir, false);
 });
 
+test('should handle invalid pathname', async () => {
+	let prev = process.platform;
+	Object.defineProperty(process, 'platform', { value: 'win32' });
+
+	try {
+		await mkdirs('foo"bar');
+		assert.unreachable('should have thrown');
+	} catch (err) {
+		assert.instance(err, Error, 'throws Error');
+		assert.is(err.message, 'EINVAL: invalid characters');
+		assert.is(err.path, 'foo"bar');
+		assert.is(err.code, 'EINVAL');
+	}
+
+	Object.defineProperty(process, 'platform', { value: prev });
+});
+
 if (isWin) {
 	// assume the `o:\` drive doesn't exist on Windows
 	test('handles non-existent root', async () => {
 		try {
-			await mkdirs('o:\\foo');
+			let path = 'o:\\foo';
+			let parsed = parse(path);
+			let foobar = path.replace(parsed.root, '');
+
+			console.log('~> DEBUG:', parsed, foobar, /[<>:"|?*]/.test(foobar));
+
+			await mkdirs(path);
 			assert.unreachable('should have thrown');
 		} catch (err) {
 			assert.is(err.code, 'ENOENT');
 			assert.ok(/no such file or directory/.test(err.message));
-		}
-	});
-
-	test('(windows) invalid pathname', async () => {
-		try {
-			await mkdirs('foo"bar');
-			assert.unreachable('should have thrown');
-		} catch (err) {
-			assert.instance(err, Error, 'throws Error');
-			assert.is(err.message, 'EINVAL: invalid characters', '~> message');
-			assert.is(err.path, 'foo"bar', '~> path');
-			assert.is(err.code, 'EINVAL', '~> code');
 		}
 	});
 }
