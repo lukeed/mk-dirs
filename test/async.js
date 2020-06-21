@@ -165,15 +165,15 @@ test('should handle invalid pathname', async () => {
 if (isWin) {
 	// assume the `o:\` drive doesn't exist on Windows
 	test('handles non-existent root', async () => {
-		let path = 'o:\\foo';
+		// Node changed how it handles between majors
+		let [ver] = process.version.split('.', 1);
+		let CODE = +ver.substring(1) >= 10 ? 'EINVAL' : 'ENOENT';
 
 		try {
-			await mkdirs(path);
+			await mkdirs('o:\\foo');
 			assert.unreachable('should have thrown');
 		} catch (err) {
-			assert.is(err.code, 'EINVAL');
-			console.log('DEBUG:', err);
-			// assert.ok(/no such file or directory/.test(err.message));
+			assert.is(err.code, CODE);
 		}
 	});
 }
