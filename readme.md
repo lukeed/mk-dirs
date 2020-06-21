@@ -1,4 +1,4 @@
-# mk-dirs [![build status](https://badgen.now.sh/github/status/lukeed/mk-dirs)](https://github.com/lukeed/mk-dirs/actions) [![codecov](https://badgen.now.sh/codecov/c/github/lukeed/mk-dirs)](https://codecov.io/gh/lukeed/mk-dirs)
+# mk-dirs [![CI](https://github.com/lukeed/mk-dirs/workflows/CI/badge.svg)](https://github.com/lukeed/mk-dirs/actions) [![codecov](https://badgen.now.sh/codecov/c/github/lukeed/mk-dirs)](https://codecov.io/gh/lukeed/mk-dirs)
 
 > A tiny (384B to 417B) utility to make a directory and its parents, recursively
 
@@ -151,6 +151,8 @@ The directory [permissions](https://x-team.com/blog/file-system-permissions-umas
 
 ## Related
 
+- [`totalist`](https://github.com/lukeed/totalist) - A tiny (195B to 224B) utility to recursively list all (total) files in a directory
+- [`escalade`](https://github.com/lukeed/escalade) - A tiny (183B) and fast utility to ascend parent directories
 - [`premove`](https://github.com/lukeed/premove) – A tiny (247B) utility to remove items recursively
 
 ## License
