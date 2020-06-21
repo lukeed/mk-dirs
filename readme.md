@@ -1,23 +1,12 @@
 # mk-dirs [![build status](https://badgen.now.sh/github/status/lukeed/mk-dirs)](https://github.com/lukeed/mk-dirs/actions) [![codecov](https://badgen.now.sh/codecov/c/github/lukeed/mk-dirs)](https://codecov.io/gh/lukeed/mk-dirs)
 
-> A tiny (420B) utility to make a directory and its parents, recursively
+> A tiny (384B to 417B) utility to make a directory and its parents, recursively
 
-This is a `Promise`-based utility that recursively creates directories.<br>
-It's effectively `mkdir -p` for Node.js
+This is a `Promise`-based utility that recursively creates directories. It's effectively `mkdir -p` for Node.js.
 
-This module is a fast and lightweight alternative to [`mkdirp`](https://github.com/substack/node-mkdirp).<br>
-Check out [Comparisons](#comparisons) for more info!
+This module is a fast and lightweight alternative to [`mkdirp`](https://github.com/substack/node-mkdirp). Check out [Comparisons](#comparisons) for more info!
 
-> **Important:** Requires Node 8.x or later – uses `async` functions.
-
-Available in these formats:
-
-* **ES Module**: `dist/index.mjs`
-* **CommonJS**: `dist/index.js`
-
-> **Note:**<br>
-> Are you using Node.js 10.12 or later?<br>
-> If so, You should use the built-in [`fs.mkdir`](https://nodejs.org/api/fs.html#fs_fs_mkdir_path_options_callback) instead!
+> **Notice:** Node v10.12.0 includes the `recursive` option for [`fs.mkdir`](https://nodejs.org/api/fs.html#fs_fs_mkdir_path_options_callback) and [`fs.mkdirSync`](https://nodejs.org/api/fs.html#fs_fs_mkdirsync_path_options).
 
   ```js
   const { mkdir } = require('fs');
@@ -35,6 +24,29 @@ Available in these formats:
 
 ```
 $ npm install --save mk-dirs
+```
+
+## Modes
+
+There are two "versions" of `mk-dirs` available:
+
+#### "async"
+> **Node.js:** >= 8.x<br>
+> **Size (gzip):** 417 bytes<br>
+> **Availability:** [CommonJS](https://unpkg.com/mk-dirs/dist/index.js), [ES Module](https://unpkg.com/mk-dirs/dist/index.mjs)
+
+This is the primary/default mode. It makes use of `async`/`await` and [`util.promisify`](https://nodejs.org/api/util.html#util_util_promisify_original).
+
+#### "sync"
+> **Node.js:** >= 6.x<br>
+> **Size (gzip):** 384 bytes<br>
+> **Availability:** [CommonJS](https://unpkg.com/mk-dirs/sync/index.js), [ES Module](https://unpkg.com/mk-dirs/sync/index.mjs)
+
+This is the opt-in mode, ideal for scenarios where `async` usage cannot be supported.<br>In order to use it, simply make the following changes:
+
+```diff
+-import mkdirs from 'mk-dirs';
++import mkdirs from 'mk-dirs/sync';
 ```
 
 

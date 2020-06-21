@@ -3,7 +3,7 @@ import premove from 'premove';
 import * as assert from 'uvu/assert';
 import { existsSync, statSync, writeFileSync } from 'fs';
 import { join, resolve } from 'path';
-import mkdirs from  '../src/async';
+import mkdirs from  '../src/sync';
 
 const isWin = process.platform === 'win32';
 
@@ -25,7 +25,7 @@ test('exports', () => {
 });
 
 test('single (relative)', async () => {
-	let out = await mkdirs('foo');
+	let out = mkdirs('foo');
 	assert.is(out, resolve('foo'), '~> returns the absolute file path');
 
 	exists(out, true);
@@ -37,7 +37,7 @@ test('single (relative)', async () => {
 
 test('single (absolute)', async () => {
 	let str = resolve('bar');
-	let out = await mkdirs(str);
+	let out = mkdirs(str);
 	assert.is(out, str, '~> returns the absolute file path');
 
 	exists(out, true);
@@ -50,7 +50,7 @@ test('single (absolute)', async () => {
 test('nested create / recursive', async () => {
 	let dir = resolve('./foo');
 
-	let out = await mkdirs('./foo/bar/baz');
+	let out = mkdirs('./foo/bar/baz');
 	exists(out, true);
 	isValid(out);
 
@@ -60,7 +60,7 @@ test('nested create / recursive', async () => {
 
 test('option: mode', async () => {
 	let mode = 0o744;
-	let out = await mkdirs('hello', { mode });
+	let out = mkdirs('hello', { mode });
 
 	exists(out, true);
 	isValid(out, mode);
@@ -73,7 +73,7 @@ test('option: cwd', async () => {
 	let dir = resolve('foobar');
 	let str = resolve('foobar/foo/bar');
 
-	let out = await mkdirs('foo/bar', { cwd:dir });
+	let out = mkdirs('foo/bar', { cwd:dir });
 	assert.is(out, str, '~> returns the absolute file path');
 
 	exists(out, true);
@@ -85,8 +85,8 @@ test('option: cwd', async () => {
 
 test('partially exists: directory', async () => {
 	let foo = resolve('foobar');
-	let dir = await mkdirs('foobar/baz');
-	let out = await mkdirs('hello/world', { cwd: dir });
+	let dir = mkdirs('foobar/baz');
+	let out = mkdirs('hello/world', { cwd: dir });
 	let str = resolve('foobar/baz/hello/world');
 
 	assert.is(out, str, '~> returns the absolute file path');
@@ -102,7 +102,7 @@ test('partially exists: file', async () => {
 	let foo = resolve('foobar');
 	let file = join(foo, 'bar');
 
-	let dir = await mkdirs(foo);
+	let dir = mkdirs(foo);
 	exists(dir, true, '~> (setup) dir exists');
 
 	// create "foobar/bar" as a file
@@ -110,7 +110,7 @@ test('partially exists: file', async () => {
 	exists(file, true, '~> (setup) file exists');
 
 	try {
-		await mkdirs('foobar/bar/hello');
+		mkdirs('foobar/bar/hello');
 		assert.unreachable('should have thrown');
 	} catch (err) {
 		assert.instance(err, Error, 'throws Error');
@@ -131,7 +131,7 @@ test('path with null bytes', async () => {
 	let str = resolve('hello/bar\u0000baz');
 
 	try {
-		await mkdirs(str);
+		mkdirs(str);
 		assert.unreachable('should have thrown');
 	} catch (err) {
 		assert.instance(err, Error, 'throws Error');
@@ -150,7 +150,7 @@ test('should handle invalid pathname', async () => {
 	Object.defineProperty(process, 'platform', { value: 'win32' });
 
 	try {
-		await mkdirs('foo"bar');
+		mkdirs('foo"bar');
 		assert.unreachable('should have thrown');
 	} catch (err) {
 		assert.instance(err, Error, 'throws Error');
@@ -170,7 +170,7 @@ if (isWin) {
 		let CODE = +ver.substring(1) >= 10 ? 'EINVAL' : 'ENOENT';
 
 		try {
-			await mkdirs('o:\\foo');
+			mkdirs('o:\\foo');
 			assert.unreachable('should have thrown');
 		} catch (err) {
 			assert.is(err.code, CODE);

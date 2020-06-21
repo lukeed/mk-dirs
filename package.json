@@ -2,22 +2,23 @@
   "name": "mk-dirs",
   "version": "2.0.0",
   "repository": "lukeed/mk-dirs",
-  "description": "A tiny (420B) utility to make a directory and its parents, recursively",
+  "description": "A tiny (384B to 417B) utility to make a directory and its parents, recursively",
   "module": "dist/index.mjs",
   "main": "dist/index.js",
   "types": "index.d.ts",
   "license": "MIT",
   "files": [
     "*.d.ts",
-    "dist"
+    "dist",
+    "sync"
   ],
   "author": {
     "name": "Luke Edwards",
     "email": "luke.edwards05@gmail.com",
-    "url": "lukeed.com"
+    "url": "https://lukeed.com"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=6"
   },
   "scripts": {
     "build": "bundt",
@@ -25,11 +26,13 @@
     "test": "uvu -r esm test"
   },
   "modes": {
+    "sync": "src/sync.js",
     "default": "src/async.js"
   },
   "keywords": [
     "mkdir",
     "make dir",
+    "recursive",
     "mkdirp"
   ],
   "devDependencies": {
