@@ -1,185 +1,173 @@
-const test = require('tape');
-const premove = require('premove');
-const { join, resolve } = require('path');
-const { existsSync, statSync, writeFileSync } = require('fs');
-const mkdirs = require('../dist');
+import { test } from 'uvu';
+import premove from 'premove';
+import * as assert from 'uvu/assert';
+import { existsSync, statSync, writeFileSync } from 'fs';
+import { join, resolve } from 'path';
+import mkdirs from  '../src/async';
 
 const isWin = process.platform === 'win32';
 
-test.Test.prototype.exists = function (str, bool, msg) {
-	msg = msg || (bool ? '~> (setup) exists' : '~> does not exist');
-	this.is(existsSync(str), bool, msg);
-};
+function exists(str, bool, msg) {
+	assert.is(existsSync(str), bool, msg);
+}
 
-test.Test.prototype.valid = function (dir, mode) {
+function isValid(dir, mode) {
 	let stats = statSync(dir);
 	mode = isWin ? 0o666 : (mode || 0o777 & (~process.umask()));
-	this.is(stats.mode & 0o777, mode, '~> correct mode');
-	this.true(stats.isDirectory(), '~> is a directory');
-};
+	assert.is(stats.mode & 0o777, mode, '~> correct mode');
+	assert.ok(stats.isDirectory(), '~> is a directory');
+}
 
-test('exports', t => {
-	t.is(typeof mkdirs, 'function', 'a function');
-	t.end();
+// ---
+
+test('exports', () => {
+	assert.type(mkdirs, 'function');
 });
 
-test('single (relative)', async t => {
+test('single (relative)', async () => {
 	let out = await mkdirs('foo');
-	t.is(out, resolve('foo'), '~> returns the absolute file path');
+	assert.is(out, resolve('foo'), '~> returns the absolute file path');
 
-	t.exists(out, true, '~> filepath exists');
-	t.valid(out);
+	exists(out, true);
+	isValid(out);
 
 	await premove(out);
-	t.exists(out, false, 'cleanup');
-
-	t.end();
+	exists(out, false);
 });
 
-test('single (absolute)', async t => {
+test('single (absolute)', async () => {
 	let str = resolve('bar');
 	let out = await mkdirs(str);
-	t.is(out, str, '~> returns the absolute file path');
+	assert.is(out, str, '~> returns the absolute file path');
 
-	t.exists(out, true, '~> filepath exists');
-	t.valid(out);
+	exists(out, true);
+	isValid(out);
 
 	await premove(out);
-	t.exists(out, false, 'cleanup');
-
-	t.end();
+	exists(out, false);
 });
 
-test('nested create / recursive', async t => {
+test('nested create / recursive', async () => {
 	let dir = resolve('./foo');
 
 	let out = await mkdirs('./foo/bar/baz');
-	t.exists(out, true, '~> filepath exists');
-	t.valid(out);
+	exists(out, true);
+	isValid(out);
 
 	await premove(dir);
-	t.exists(dir, false, 'cleanup');
-
-	t.end();
+	exists(dir, false);
 });
 
-test('option: mode', async t => {
+test('option: mode', async () => {
 	let mode = 0o744;
 	let out = await mkdirs('hello', { mode });
 
-	t.exists(out, true, '~> filepath exists');
-	t.valid(out, mode);
+	exists(out, true);
+	isValid(out, mode);
 
 	await premove(out);
-	t.exists(out, false, 'cleanup');
-
-	t.end();
+	exists(out, false);
 });
 
-test('option: cwd', async t => {
+test('option: cwd', async () => {
 	let dir = resolve('foobar');
 	let str = resolve('foobar/foo/bar');
 
 	let out = await mkdirs('foo/bar', { cwd:dir });
-	t.is(out, str, '~> returns the absolute file path');
+	assert.is(out, str, '~> returns the absolute file path');
 
-	t.exists(out, true, '~> filepath exists');
-	t.valid(out);
+	exists(out, true);
+	isValid(out);
 
 	await premove(dir);
-	t.exists(dir, false, 'cleanup');
-
-	t.end();
+	exists(dir, false);
 });
 
-test('partially exists: directory', async t => {
+test('partially exists: directory', async () => {
 	let foo = resolve('foobar');
 	let dir = await mkdirs('foobar/baz');
 	let out = await mkdirs('hello/world', { cwd: dir });
 	let str = resolve('foobar/baz/hello/world');
 
-	t.is(out, str, '~> returns the absolute file path');
+	assert.is(out, str, '~> returns the absolute file path');
 
-	t.exists(out, true, '~> filepath exists');
-	t.valid(out);
+	exists(out, true);
+	isValid(out);
 
 	await premove(foo);
-	t.exists(foo, false, 'cleanup');
-
-	t.end();
+	exists(foo, false);
 });
 
-test('partially exists: file', async t => {
-	t.plan(9);
-
+test('partially exists: file', async () => {
 	let foo = resolve('foobar');
 	let file = join(foo, 'bar');
 
 	let dir = await mkdirs(foo);
-	t.exists(dir, true, '~> (setup) dir exists');
+	exists(dir, true, '~> (setup) dir exists');
 
 	// create "foobar/bar" as a file
 	writeFileSync(file, 'asd');
-	t.exists(file, true, '~> (setup) file exists');
+	exists(file, true, '~> (setup) file exists');
 
 	try {
 		await mkdirs('foobar/bar/hello');
+		assert.unreachable('should have thrown');
 	} catch (err) {
-		t.true(err instanceof Error, 'throws Error');
-		t.is(err.message, 'ENOTDIR: not a directory', '~> message');
-		t.is(err.code, 'ENOTDIR', '~> code');
-		t.is(err.path, file, '~> path');
+		assert.instance(err, Error, 'throws Error');
+		assert.is(err.message, 'ENOTDIR: not a directory', '~> message');
+		assert.is(err.code, 'ENOTDIR', '~> code');
+		assert.is(err.path, file, '~> path');
 	}
 
-	t.exists('foobar/bar/hello', false, '~> did not create "hello" dir');
-	t.exists('foobar/bar', true, '~> file still remains');
+	exists('foobar/bar/hello', false, '~> did not create "hello" dir');
+	exists('foobar/bar', true, '~> file still remains');
 
 	await premove(foo);
-	t.exists(foo, false, 'cleanup');
+	exists(foo, false);
 });
 
-test('path with null bytes', async t => {
-	t.plan(5);
-
+test('path with null bytes', async () => {
 	let dir = resolve('hello');
 	let str = resolve('hello/bar\u0000baz');
 
 	try {
 		await mkdirs(str);
+		assert.unreachable('should have thrown');
 	} catch (err) {
-		t.true(err instanceof Error, 'throws Error');
-		t.true(/ENOENT|ERR_INVALID_ARG_VALUE/.test(err.code), '~> code');
-		t.true(err.message.includes('null bytes'), '~> message');
+		assert.instance(err, Error, 'throws Error');
+		assert.ok(/ENOENT|ERR_INVALID_ARG_VALUE/.test(err.code), '~> code');
+		assert.ok(err.message.includes('null bytes'), '~> message');
 	}
 
-	t.exists(dir, true, '~> created "hello" base directory');
+	exists(dir, true, '~> created "hello" base directory');
 
 	await premove(dir);
-	t.exists(dir, false, 'cleanup');
+	exists(dir, false);
 });
 
 if (isWin) {
 	// assume the `o:\` drive doesn't exist on Windows
-	test('handles non-existent root', async t => {
+	test('handles non-existent root', async () => {
 		try {
 			await mkdirs('o:\\foo');
+			assert.unreachable('should have thrown');
 		} catch (err) {
-			t.pass('throws');
-			t.is(err.code, 'ENOENT');
-			t.true(/no such file or directory/.test(err.message));
+			assert.is(err.code, 'ENOENT');
+			assert.ok(/no such file or directory/.test(err.message));
 		}
-		t.end();
 	});
 
-	test('(windows) invalid pathname', async t => {
+	test('(windows) invalid pathname', async () => {
 		try {
-			t.plan(4);
 			await mkdirs('foo"bar');
+			assert.unreachable('should have thrown');
 		} catch (err) {
-			t.true(err instanceof Error, 'throws Error');
-			t.is(err.message, 'EINVAL: invalid characters', '~> message');
-			t.is(err.path, 'foo"bar', '~> path');
-			t.is(err.code, 'EINVAL', '~> code');
+			assert.instance(err, Error, 'throws Error');
+			assert.is(err.message, 'EINVAL: invalid characters', '~> message');
+			assert.is(err.path, 'foo"bar', '~> path');
+			assert.is(err.code, 'EINVAL', '~> code');
 		}
 	});
 }
+
+test.run();

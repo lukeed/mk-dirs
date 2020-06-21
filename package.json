@@ -21,18 +21,21 @@
   },
   "scripts": {
     "build": "bundt",
-    "bench": "node bench",
     "pretest": "npm run build",
-    "test": "tape test/*.js | tap-spec"
+    "test": "uvu -r esm test"
+  },
+  "modes": {
+    "default": "src/async.js"
   },
   "keywords": [
     "mkdir",
+    "make dir",
     "mkdirp"
   ],
   "devDependencies": {
-    "bundt": "^0.4.0",
-    "premove": "^1.0.0",
-    "tap-spec": "^5.0.0",
-    "tape": "^4.10.2"
+    "bundt": "1.0.1",
+    "esm": "3.2.25",
+    "premove": "2.0.0",
+    "uvu": "0.0.14"
   }
 }
