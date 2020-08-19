@@ -1,6 +1,6 @@
 export interface Options {
-	cwd: string,
-	mode: number,
+	cwd: string;
+	mode: number;
 }
-declare function mkdirs(filepath: string, options?: Partial<Options>): Promise<string>;
-export = mkdirs;
+
+export function mkdir(filepath: string, options?: Partial<Options>): Promise<string>;

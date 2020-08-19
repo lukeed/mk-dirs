@@ -7,7 +7,7 @@ function throws(code, msg, path) {
 	throw err;
 }
 
-export default function (str, opts={}) {
+export function mkdir(str, opts={}) {
 	if (process.platform === 'win32' && /[<>:"|?*]/.test(str.replace(parse(str).root, ''))) {
 		throws('EINVAL', 'invalid characters', str);
 	}

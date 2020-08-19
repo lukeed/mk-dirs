@@ -1,9 +1,9 @@
 import { promisify } from 'util';
-import { existsSync, mkdir, stat } from 'fs';
+import { existsSync, mkdir as mk, stat } from 'fs';
 import { join, normalize, parse, resolve } from 'path';
 
 const statp = promisify(stat);
-const mkdirp = promisify(mkdir);
+const mkdirp = promisify(mk);
 
 function throws(code, msg, path) {
 	let err = new Error(code + ': ' + msg);
@@ -11,7 +11,7 @@ function throws(code, msg, path) {
 	throw err;
 }
 
-export default async function (str, opts={}) {
+export async function mkdir(str, opts={}) {
 	if (process.platform === 'win32' && /[<>:"|?*]/.test(str.replace(parse(str).root, ''))) {
 		throws('EINVAL', 'invalid characters', str);
 	}

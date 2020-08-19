@@ -45,8 +45,8 @@ This is the primary/default mode. It makes use of `async`/`await` and [`util.pro
 This is the opt-in mode, ideal for scenarios where `async` usage cannot be supported.<br>In order to use it, simply make the following changes:
 
 ```diff
--import mkdirs from 'mk-dirs';
-+import mkdirs from 'mk-dirs/sync';
+-import { mkdir } from 'mk-dirs';
++import { mkdir } from 'mk-dirs/sync';
 ```
 
 
@@ -61,19 +61,19 @@ $ tree
 ```
 
 ```js
-import mkdirs from 'mk-dirs';
+import { mkdir } from 'mk-dirs';
 import { resolve } from 'path';
 
 // Async/await
 try {
-  let output = await mkdirs('foo/bar/baz');
+  let output = await mkdir('foo/bar/baz');
   console.log(output); //=> "/Users/hello/world/foo/bar/baz"
 } catch (err) {
   //
 }
 
 // Promises
-mkdirs('foo/bar/baz').then(output => {
+mkdir('foo/bar/baz').then(output => {
   console.log(output); //=> "/Users/hello/world/foo/bar/baz"
 }).catch(err => {
   //
@@ -81,7 +81,7 @@ mkdirs('foo/bar/baz').then(output => {
 
 // Using `cwd` option
 let dir = resolve('foo/bar');
-await mkdirs('hola/mundo', { cwd: dir });
+await mkdir('hola/mundo', { cwd: dir });
 //=> "/Users/hello/world/foo/bar/hola/mundo"
 ```
 
