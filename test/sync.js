@@ -1,5 +1,5 @@
 import { test } from 'uvu';
-import premove from 'premove';
+import { premove } from 'premove';
 import * as assert from 'uvu/assert';
 import { existsSync, statSync, writeFileSync } from 'fs';
 import { join, resolve } from 'path';
