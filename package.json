@@ -36,7 +36,7 @@
     "mkdirp"
   ],
   "devDependencies": {
-    "bundt": "1.0.1",
+    "bundt": "1.1.0",
     "esm": "3.2.25",
     "premove": "3.0.1",
     "uvu": "0.3.3"
