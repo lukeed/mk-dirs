@@ -1,6 +1,6 @@
 # mk-dirs [![CI](https://github.com/lukeed/mk-dirs/workflows/CI/badge.svg)](https://github.com/lukeed/mk-dirs/actions) [![codecov](https://badgen.now.sh/codecov/c/github/lukeed/mk-dirs)](https://codecov.io/gh/lukeed/mk-dirs)
 
-> A tiny (384B to 417B) utility to make a directory and its parents, recursively
+> A tiny (381B to 419B) utility to make a directory and its parents, recursively
 
 This is a `Promise`-based utility that recursively creates directories. It's effectively `mkdir -p` for Node.js.
 
@@ -32,14 +32,14 @@ There are two "versions" of `mk-dirs` available:
 
 #### "async"
 > **Node.js:** >= 8.x<br>
-> **Size (gzip):** 417 bytes<br>
+> **Size (gzip):** 419 bytes<br>
 > **Availability:** [CommonJS](https://unpkg.com/mk-dirs/dist/index.js), [ES Module](https://unpkg.com/mk-dirs/dist/index.mjs)
 
 This is the primary/default mode. It makes use of `async`/`await` and [`util.promisify`](https://nodejs.org/api/util.html#util_util_promisify_original).
 
 #### "sync"
 > **Node.js:** >= 6.x<br>
-> **Size (gzip):** 384 bytes<br>
+> **Size (gzip):** 381 bytes<br>
 > **Availability:** [CommonJS](https://unpkg.com/mk-dirs/sync/index.js), [ES Module](https://unpkg.com/mk-dirs/sync/index.mjs)
 
 This is the opt-in mode, ideal for scenarios where `async` usage cannot be supported.<br>In order to use it, simply make the following changes:
